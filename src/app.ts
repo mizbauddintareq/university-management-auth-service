@@ -1,5 +1,5 @@
 import cors from 'cors'
-import express, { Application, Request, Response } from 'express'
+import express, { Application, Request } from 'express'
 const app: Application = express()
 
 // using cors
@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Testing
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: any) => {
   res.send('working successfully')
 })
 
