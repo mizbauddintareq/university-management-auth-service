@@ -1,5 +1,5 @@
 import cors from 'cors'
-import express, { Application, Request, Response } from 'express'
+import express, { Application, Response } from 'express'
 import usersRouter from './app/modules/users/users.route'
 const app: Application = express()
 // using cors
@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/v1/users', usersRouter)
 
 // Testing
-app.get('/', async (req: Request, res: Response) => {
+app.get('/', async (req: any, res: Response) => {
   res.send('working successfully')
 })
 
