@@ -1,0 +1,77 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\mizba\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js lint-staged
+
+PATH: 
+  C:\Program Files\Git\mingw64\libexec\git-core;C:\Users\mizba\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\mizba\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Users\mizba\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Git\cmd;C:\Users\mizba\AppData\Local\Microsoft\WindowsApps;C:\Users\mizba\AppData\Roaming\npm;C:\Users\mizba\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\mizba\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.1.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: E:\Level-2\Mission-3\university-managment-auth-service\package.json: Expected double-quoted property name in JSON at position 1162
+      at JSON.parse (<anonymous>)
+      at C:\Users\mizba\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\mizba\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\mizba\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "university-managment-auth-service",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/server.ts",
+    "scripts": {
+      "start": "ts-node-dev --respawn --transpile-only src/server.ts",
+      "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
+      "lint:fix": "eslint . --fix",
+      "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+      "prettier:fix": "prettier --write .",
+      "lint-prettier": "yarn lint:check && yarn prettier:check",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "mizbauddintareq",
+    "license": "ISC",
+    "lint-staged": {
+      "src/**/*.ts": "yarn lint-prettier"
+    },
+    "devDependencies": {
+      "@types/cors": "^2.8.13",
+      "@types/express": "^4.17.17",
+      "eslint-config-prettier": "^8.8.0",
+      "husky": "^8.0.3",
+      "lint-staged": "^13.2.2",
+      "prettier": "^2.8.8",
+      "ts-node-dev": "^2.0.0",
+      "typescript": "^5.0.4"
+    },
+    "dependencies": {
+      "@typescript-eslint/eslint-plugin": "^5.59.7",
+      "@typescript-eslint/parser": "^5.59.7",
+      "cors": "^2.8.5",
+      "dotenv": "^16.0.3",
+      "eslint": "^8.41.0",
+      "express": "^4.18.2",
+  <<<<<<< HEAD
+      "mongoose": "^7.2.1",
+      "winston": "^3.9.0"
+  =======
+      "install": "^0.13.0",
+      "mongoose": "^7.2.1",
+      "winston": "^3.9.0",
+      "winston-daily-rotate-file": "^4.7.1"
+  >>>>>>> 37533d83c31ec94399685edaf710b8c985f4cb69
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
