@@ -1,4 +1,5 @@
 import config from '../../../config'
+import ApiError from '../../../errors/ApiError'
 import { IUser } from './user.interface'
 import { User } from './users.model'
 import { generateUserId } from './users.utils'
@@ -15,7 +16,7 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
 
   const createdUser = await User.create(user)
   if (!createUser) {
-    throw new Error('Fail to create new user.')
+    throw new ApiError(400, 'Fail to create new user.')
   }
 
   return createdUser
