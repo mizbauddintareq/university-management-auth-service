@@ -13,11 +13,12 @@ let server: Server;
 
 async function dbConnection() {
   try {
+    // mongoose.set('strictQuery', false);
     await mongoose.connect(config.database_url as string);
     logger.info(`🛢 Database is connected successfully`);
 
     server = app.listen(config.port, () => {
-      logger.info(`🖥️ Application  listening on port ${config.port}`);
+      logger.info(`🖥️  Application listening on port ${config.port}`);
     });
   } catch (error) {
     errorLogger.error('Failed to connect database 😭', error);
