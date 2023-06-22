@@ -1,15 +1,16 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
-import { Error } from 'mongoose';
 import config from '../../config';
 import ApiError from '../../errors/ApiError';
 import handleValidationError from '../../errors/handleValidationError';
 
 import { ZodError } from 'zod';
+import handleCastError from '../../errors/handleCastError';
 import handleZodError from '../../errors/handleZodError';
 import { IGenericErrorMessage } from '../../interfaces/error';
-import { errorLogger } from '../../shared/logger';
+import { errorlogger } from '../../shared/logger';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -18,8 +19,8 @@ const globalErrorHandler: ErrorRequestHandler = (
   next: NextFunction
 ) => {
   config.env === 'development'
-    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, error)
-    : errorLogger.error(`🐱‍🏍 globalErrorHandler ~~`, error);
+    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, { error })
+    : errorlogger.error(`🐱‍🏍 globalErrorHandler ~~`, error);
 
   let statusCode = 500;
   let message = 'Something went wrong !';
@@ -32,6 +33,11 @@ const globalErrorHandler: ErrorRequestHandler = (
     errorMessages = simplifiedError.errorMessages;
   } else if (error instanceof ZodError) {
     const simplifiedError = handleZodError(error);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
+  } else if (error?.name === 'CastError') {
+    const simplifiedError = handleCastError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
@@ -64,8 +70,13 @@ const globalErrorHandler: ErrorRequestHandler = (
     errorMessages,
     stack: config.env !== 'production' ? error?.stack : undefined,
   });
-
-  next();
 };
 
 export default globalErrorHandler;
+
+//path:
+//message:
+
+// 2025 Fall
+
+// 2025 and
