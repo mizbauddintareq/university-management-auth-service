@@ -2,9 +2,9 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../../config';
-import { IUser, UserModel } from './user.interface';
+import { IUser, IUserMethods, UserModel } from './user.interface';
 
-const userSchema = new Schema<IUser, UserModel>(
+const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
     id: {
       type: String,
@@ -23,6 +23,9 @@ const userSchema = new Schema<IUser, UserModel>(
     needsPasswordChange: {
       type: Boolean,
       default: true,
+    },
+    passwordChangedAt: {
+      type: Date,
     },
     student: {
       type: Schema.Types.ObjectId,
@@ -45,54 +48,58 @@ const userSchema = new Schema<IUser, UserModel>(
   }
 );
 
-// create static method for isUserExist
-userSchema.statics.isUserExist = async function (
+UserSchema.statics.isUserExist = async function (
   id: string
-): Promise<Pick<
-  IUser,
-  'id' | 'password' | 'needsPasswordChange' | 'role'
-> | null> {
+): Promise<IUser | null> {
   return await User.findOne(
     { id },
     { id: 1, password: 1, role: 1, needsPasswordChange: 1 }
   );
 };
 
-// create static method for isPasswordMatched
-userSchema.statics.isPasswordMatched = async function (
+UserSchema.statics.isPasswordMatched = async function (
   givenPassword: string,
   savedPassword: string
 ): Promise<boolean> {
   return await bcrypt.compare(givenPassword, savedPassword);
 };
 
-// hashing user password
-userSchema.pre('save', async function (next) {
+UserSchema.methods.changedPasswordAfterJwtIssued = function (
+  jwtTimestamp: number
+) {
+  console.log({ jwtTimestamp }, 'hi');
+};
+
+// User.create() / user.save()
+UserSchema.pre('save', async function (next) {
+  // hashing user password
   const user = this;
   user.password = await bcrypt.hash(
     user.password,
-    Number(config.bcrypt_salt_rounds)
+    Number(config.bycrypt_salt_rounds)
   );
+
+  if (!user.needsPasswordChange) {
+    user.passwordChangedAt = new Date();
+  }
 
   next();
 });
 
-/* // create instance method for isUserExist
-userSchema.methods.isUserExist = async function (
-  id: string
-): Promise<Partial<IUser> | null> {
-  return await User.findOne(
-    { id },
-    { id: 1, password: 1, needsPasswordChange: 1 }
-  );
-}; */
+export const User = model<IUser, UserModel>('User', UserSchema);
 
-/* // create instance method for isPasswordMatched
-userSchema.methods.isPasswordMatched = async function (
-  givenPassword: string,
-  savedPassword: string
-): Promise<boolean> {
-  return await bcrypt.compare(givenPassword, savedPassword);
-}; */
+// UserSchema.methods.isUserExist = async function (
+//   id: string
+// ): Promise<Partial<IUser> | null> {
+//   return await User.findOne(
+//     { id },
+//     { id: 1, password: 1, needsPasswordChange: 1 }
+//   );
+// };
 
-export const User = model<IUser, UserModel>('User', userSchema);
+// UserSchema.methods.isPasswordMatched = async function (
+//   givenPassword: string,
+//   savedPassword: string
+// ): Promise<boolean> {
+//   return await bcrypt.compare(givenPassword, savedPassword);
+// };

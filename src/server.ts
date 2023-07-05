@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Server } from 'http';
 import mongoose from 'mongoose';
 import app from './app';
@@ -11,17 +12,18 @@ process.on('uncaughtException', error => {
 
 let server: Server;
 
-async function dbConnection() {
+async function bootstrap() {
   try {
-    // mongoose.set('strictQuery', false);
     await mongoose.connect(config.database_url as string);
-    logger.info(`🛢 Database is connected successfully`);
+    // logger.info(`🛢   Database is connected successfully`);
+    console.log(`🛢   Database is connected successfully`);
 
     server = app.listen(config.port, () => {
-      logger.info(`🖥️  Application listening on port ${config.port}`);
+      // logger.info(`Application  listening on port ${config.port}`);
+      console.log(`Application  listening on port ${config.port}`);
     });
-  } catch (error) {
-    errorLogger.error('Failed to connect database 😭', error);
+  } catch (err) {
+    errorLogger.error('Failed to connect database', err);
   }
 
   process.on('unhandledRejection', error => {
@@ -36,7 +38,7 @@ async function dbConnection() {
   });
 }
 
-dbConnection();
+bootstrap();
 
 process.on('SIGTERM', () => {
   logger.info('SIGTERM is received');
